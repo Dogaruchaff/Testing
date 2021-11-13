@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    int egemen = 5;
     // Start is called before the first frame update
     void Start()
     {
-        
+        egemen += 3;
     }
 
     // Update is called once per frame
