@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-int anan;
     // Start is called before the first frame update
     void Start()
     {
