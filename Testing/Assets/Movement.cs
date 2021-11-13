@@ -5,6 +5,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     int egemen = 5;
+    int anan = 31;
+   
     // Start is called before the first frame update
     void Start()
     {
