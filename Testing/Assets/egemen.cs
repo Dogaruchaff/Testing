@@ -4,19 +4,37 @@ using UnityEngine;
 
 public class egemen : MonoBehaviour
 {
-    int haha = 31;
     bool isprime;
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 2; i <= 100; i++) {  
-            for (int j = 2; j <= 100; j++) {  
-                if (i != j && i % j == 0) {  
-                    
-                    break;  
-                }  
-            }  
+        
+        for (int i = 2; i <= 1000; i++)
+        {
+            
+            for (int p = 2; p <= i; p++)
+            {
+                
+                if (i % p == 0 && i != p)
+                {
+                    isprime = false;
+                    break;
+                }
+                isprime = true;
+                
+                
+                
+            }
+            if (isprime == true)
+            {
+                print(i);
+            }
         }
+        
+
+        
+        
+        
     }
 
     // Update is called once per frame
