@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class linebenderer : MonoBehaviour
 {
+    public LayerMask layer;
     LineRenderer lr;
     public Camera cam;
-    bool isStartPoint;
-    Transform startpos;
+    bool isClicked;
+    bool isConnected;
+    Vector3 startpos;
+    public Material startmaterial;
+    public Material endmaterial;
+    
     void Start()
     {
         lr = this.GetComponent<LineRenderer>();
@@ -16,34 +21,57 @@ public class linebenderer : MonoBehaviour
     
     void Update()
     {
+        
         var ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if(Physics.Raycast(ray,out hit))
+        if(Physics.Raycast(ray,out hit,1000f,layer))
         {
-            Debug.DrawLine(cam.transform.position,hit.point,Color.green);
-            if (hit.transform.tag == "startpoint" && Input.GetMouseButtonDown(0))
+            Debug.DrawLine(cam.transform.position,hit.point,Color.red);
+
+            // ilk tıklama
+            if (Input.GetMouseButtonDown(0) && hit.transform.tag == "startpoint")
             {
-                startpos = hit.transform;
-                lr = hit.transform.GetComponent<LineRenderer>();
-                lr.SetPosition(0,startpos.position);
-                lr.SetPosition(1,startpos.position);
-                isStartPoint = true;
-            }
-            if (hit.transform.tag == "endpoint" && isStartPoint == true)
-            {
+                startmaterial = hit.transform.GetComponent<MeshRenderer>().material;
+                startpos = hit.transform.position;
+
+                lr = hit.transform.gameObject.GetComponent<LineRenderer>();
+                lr.SetPosition(0,hit.transform.position);
                 lr.SetPosition(1,hit.transform.position);
-                isStartPoint = false;
+
+                lr.startColor = startmaterial.color;
+                lr.endColor = startmaterial.color;
+
+                isClicked = true;
             }
-            if (Input.GetMouseButtonUp(0) && hit.transform.tag != "endpoint")
-           {
-               lr.SetPosition(0,startpos.position);
-               lr.SetPosition(1,startpos.position);
-               isStartPoint = false;
-           }
-            if (hit.transform.tag == "wirefix" && isStartPoint == true)
+
+            // basılı tutma hali
+            if (isClicked == true)
             {
-                lr.SetPosition(1, hit.point);
+                lr.SetPosition(1,hit.point);
             }
+
+            // son tıklama
+            if (Input.GetMouseButtonUp(0) && startmaterial != null)
+            {
+                endmaterial = hit.transform.GetComponent<MeshRenderer>().material;
+
+                if (startmaterial.name == endmaterial.name)
+                {
+                    lr.SetPosition(1,hit.transform.position);
+                    isConnected = true;
+                    isClicked = false;
+                    print("hey");
+                }
+                else if(isConnected)
+                {
+                    lr.SetPosition(1,startpos);
+                    isClicked = false;
+                    print("olmadi");
+                }
+            }
+            
+
+            
         }
     }
 }

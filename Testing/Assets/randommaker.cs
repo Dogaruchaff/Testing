@@ -17,7 +17,6 @@ public class randommaker : MonoBehaviour
             Points[sayi].gameObject.GetComponent<MeshRenderer>().material = pointmaterial[sayi2];
             Points.RemoveAt(sayi);
             pointmaterial.RemoveAt(sayi2);
-            print(sayi);
         }
         
     }
